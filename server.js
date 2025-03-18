@@ -29,7 +29,7 @@ app.get('/DS', (req, res) => {
 });
 
 app.get('/run-script', (req, res) => {
-    const scriptPath = 'C:\\script.js'; // Ensure this path is correct
+    const scriptPath = 'JPatrick1208/wf-case-repository/script.js'; // Ensure this path is correct
     runPowerShellScript(scriptPath, (message) => {
         res.send(message);
     });
