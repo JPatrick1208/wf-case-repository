@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Character set and viewport settings -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Webpage title -->
+  <title>CVS HYPERCARE</title>
+
+  <!-- Favicon link -->
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.png">
+
+  <!-- CSS stylesheet links -->
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css@1.1/dist/charts.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Top section with the main title -->
+  <header class="top-area">
+    <button id="toggle-sidebar" class="toggle-button">&#9776;</button>
+    <h1 class="animate-character">CVS HYPERCARE</h1>
+    <nav class="buttons">
+      <button onclick="F9links()">FIVE 9</button>
+      <button id="export-btn">EXPORT</button>
+      <button id="runScript">UPDATE DATASOURCE</button>
+      <button id="view-txt-btn">TEXT VIEW</button>
+    </nav>
+  </header>
+  <!-- Main container holding sidebar and content -->
+  <div class="container">
+    <!-- Sidebar with buttons and progress bars -->
+    <aside class="sidebar hidden" aria-label="Sidebar">
+      <section class="dashlet-container">
+        <div class="dashlet" onclick="displayTable('Case Details')" role="button" aria-label="Total Case Count">
+          <h3 class="dashlet-label">Total Case Count</h3>
+          <div id="total-cases-count">0</div>
+        </div>
+
+        <div class="dashlet" onclick="displayTable('Open Cases')" role="button" aria-label="Open Cases">
+          <h3 class="dashlet-label">Open Cases</h3>
+          <div id="total-open-cases-count">0</div>
+        </div>
+
+        <div class="dashlet" onclick="displayTable('Technical Analysis')" role="button" aria-label="Technical Analysis">
+          <h3 class="dashlet-label">Technical Analysis</h3>
+          <div id="technical-analysis-count">0</div>
+        </div>
+
+        <div class="dashlet" onclick="displayTable('Defect Cases')" role="button" aria-label="Defect Cases">
+          <h3 class="dashlet-label">Defect Cases</h3>
+          <div id="defect-cases-count">0</div>
+        </div>
+
+        <div class="dashlet" onclick="displayTable('Pending RCA')" role="button" aria-label="Pending RCA">
+          <h3 class="dashlet-label">Pending RCA</h3>
+          <div id="pending-rca-count">0</div>
+        </div>
+
+        <div class="dashlet" onclick="displayTable('Resolved')" role="button" aria-label="Resolved">
+          <h3 class="dashlet-label">Resolved</h3>
+          <div id="resolved-cases-count">0</div>
+        </div>
+
+        <div class="dashlet" onclick="displayTable('No Next Steps')" role="button" aria-label="No Next Steps">
+          <h3 class="dashlet-label">No Next Steps</h3>
+          <div id="no-next-steps-count">0</div>
+        </div>
+
+        <!-- Last update timestamp -->
+        <center><p class="dashletitem-timestamp" id="lastUpdate">LAST UPDATE:<br>&nbsp;Never</p></center>
+
+      </section>
+    </aside>
+    <!-- Content area with table and charts -->
+    <div class="content sidebar-hidden">
+      <!-- Search input field -->
+      <div class="search-container">
+        <input type="text" id="search-input" placeholder="&#xf002;" aria-label="Search">
+        <button class="clear-button" id="clear-button" aria-label="Clear search"
+          style="background-color: transparent; border: none; padding: 0; cursor: pointer; margin-left: 10px;">
+          <i class="fa-regular fa-circle-xmark" style="color: red; font-size: 18px;"></i>
+        </button>
+      </div>
+
+      <!-- Table container -->
+      <div class="table-container">
+        <table id="data-table" style="display: none;" aria-label="Data table">
+          <thead id="table-header"></thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Charts container -->
+      <div class="charts1-container">
+        <!-- Summary Chart -->
+        <div class="chart1-container">
+          <canvas id="summaryChart" aria-label="Summary Chart"></canvas>
+        </div>
+
+        <!-- Priority Chart -->
+        <div class="chart1-container">
+          <canvas id="priorityChart" aria-label="Priority Chart"></canvas>
+          <select id="priority-dropdown" class="dropdown-button" aria-label="Priority dropdown"></select>
+        </div>
+      </div>
+
+      <div class="charts2-container">
+
+        <!-- Product Chart-->
+        <div class="chart2-container">
+          <canvas id="topProductsChart" aria-label="Top Products Chart"></canvas>
+          <select id="product-dropdown" class="dropdown-button" aria-label="Product dropdown"></select>
+        </div>
+
+        <!-- Resolution Chart -->
+        <div class="chart2-container">
+          <canvas id="resolutionChart" aria-label="Resolution Chart"></canvas>
+          <select id="resolution-dropdown" class="dropdown-button" aria-label="Resolution dropdown"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom area with footer information -->
+  <div class="bottom-area">
+    <div>
+      <center class="waviy">
+        <span style="--i:1">H</span>
+        <span style="--i:2">A</span>
+        <span style="--i:3">N</span>
+        <span style="--i:4">D</span>
+        <span style="--i:5">C</span>
+        <span style="--i:6">R</span>
+        <span style="--i:7">A</span>
+        <span style="--i:8">F</span>
+        <span style="--i:9">T</span>
+        <span style="--i:10">E</span>
+        <span style="--i:11">D</span>
+        <span style="--i:12"></span>
+        <span style="--i:13"></span>
+        <span style="--i:14"></span>
+        <span style="--i:15">B</span>
+        <span style="--i:16">Y</span>
+        <span style="--i:17">:</span>
+        <span style="--i:18"></span>
+        <span style="--i:19"></span>
+        <span style="--i:20"></span>
+        <span style="--i:21">K</span>
+        <span style="--i:22">M</span>
+      </center>
+      <center>
+        <br>
+        <span style="--i:23" class="animate-character2">COPYRIGHT. 2024 KM. ALL RIGHTS RESERVED.</span>
+      </center>
+    </div>
+  </div>
+
+  <!-- Script to load content and display data -->
+  <script src="script.js"></script>
+
+  <!-- Chart.js for visual representation -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Chart.js plugin for data labels -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+  <!-- Chart.js plugin for zoom functionality -->
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+
+  <!-- xlsx functionality -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/js/all.min.js"></script>
+
+</body>
+
+</html>
